@@ -12,16 +12,27 @@ namespace Jarvis
 {
     class Program
     {
-
         //Program version number (as a float)
-        public static float versionNum = 1.1f;
+        public static float versionNum = 1.2f;
 
         //Create a speech synthesiser
         private static SpeechSynthesizer synth = new SpeechSynthesizer();
 
+        //Create some max load messages for what to say when the CPU is at 100%
+        public static List<String> maxLoadMessages = new List<string>();
+
         static void Main(string[] args)
         {
-            //Starts the program with the welcome message
+            //Before starting, add some messages to the maxLoadMessage list for when the CPU is at max
+            maxLoadMessages.Add("Omfg mike, the CPU is so maxed out it's unreal");
+            maxLoadMessages.Add("mike pls");
+            maxLoadMessages.Add("I'm burning up in here");
+            maxLoadMessages.Add("It's getting hot in here, so take off all your clothes");
+
+            //Create a randomiser to pick between one of the max load messages
+            Random random = new Random();
+
+            //Starts the program with the welcome messages
             Welcome(versionNum);
 
             #region Performance Meters
@@ -73,10 +84,15 @@ namespace Jarvis
                 Thread.Sleep(333);
                 Console.Clear();
 
-                //If the CPU load is equal to or over 50%, alert the user
-                if (cpuLoad >= 50)
+                //If the CPU is maxed, pick a random message and speak it
+                if (cpuLoad == 100)
                 {
-                    Speak(String.Format("Mike, CPU usage is at {0} percent", cpuLoad));
+                    Speak(maxLoadMessages[random.Next(0, maxLoadMessages.Count()-1)]);
+                }
+                //otherwise if the CPU is over 50 (but not 100), just alert me
+                else if (cpuLoad > 50)
+                {
+                    Speak("Uh oh. Mike, the CPU usage is at {0} percent", cpuLoad);
                 }
 
                 //Similarly, if the available RAM is under 1GB, alert the user
