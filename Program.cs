@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
 using System.Speech.Synthesis;
-using System.Speech.Recognition;
 
 namespace Jarvis
 {
